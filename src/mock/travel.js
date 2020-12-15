@@ -75,12 +75,46 @@ let eventLocations = [
   `Milan`
 ];
 
-let offers = (
+let offers = [
   {
     Type: `Taxi`,
-    `Name`:`Comfort`,
-    `Price` : `20`
+    Name:`Switch to comfort`,
+    Price: 20
   },
-
-);
+  {
+    Type: `Taxi`,
+    Name:`Order Uber`,
+    Price: 20
+  },
+  {
+    Type: `Flight`,
+    Name:`Add luggage`,
+    Price: 50
+  },
+  {
+    Type: `Flight`,
+    Name:`Switch to comfort`,
+    Price: 60
+  },
+  {
+    Type: `Drive`,
+    Name:`Rent a car`,
+    Price: 200
+  },
+  {
+    Type: `Check-in`,
+    Name:`Add breakfast`,
+    Price: 50
+  },
+  {
+    Type: `Sightseeing`,
+    Name:`Lunch in city`,
+    Price: 30
+  },
+  {
+    Type: `Sightseeing`,
+    Name:`Book tickets`,
+    Price: 40
+  }
+];
 
