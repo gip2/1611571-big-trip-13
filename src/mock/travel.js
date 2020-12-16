@@ -73,16 +73,16 @@ var collection = {
 };
 
 let eventTypes = [
-  `Taxi`,
-  `Bus`,
-  `Train`,
-  `Ship`,
-  `Transport`,
-  `Drive`,
-  `Flight`,
-  `CheckIn`, 
-  `Sightseeing`,
-  `Restaurant`
+  [`Taxi`, `img/icons/taxi.png`],
+  [`Bus`, `img/icons/bus.png`],
+  [`Train`, `img/icons/train.png`],
+  [`Ship`, `img/icons/ship.png`],
+  [`Transport`, `img/icons/transport.png`],
+  [`Drive`, `img/icons/drive.png`],
+  [`Flight`, `img/icons/flight.png`],
+  [`CheckIn`, `img/icons/check-in.png`],
+  [`Sightseeing`, `img/icons/sightseeing.png`],
+  [`Restaurant`, `img/icons/restaurant.png`]
 ];
 
 let eventLocations = [
@@ -109,70 +109,72 @@ let eventLocations = [
   `Milan`
 ];
 
-let offers = [
+let offersList = [
   {
     type: `Taxi`,
-    name:`Switch to comfort`,
+    name: `Switch to comfort`,
     price: 20
   },
   {
     type: `Taxi`,
-    name:`Order Uber`,
+    name: `Order Uber`,
     price: 20
   },
   {
     type: `Flight`,
-    name:`Add luggage`,
+    name: `Add luggage`,
     price: 50
   },
   {
     type: `Flight`,
-    name:`Switch to comfort`,
+    name: `Switch to comfort`,
     price: 60
   },
   {
     type: `Drive`,
-    name:`Rent a car`,
+    name: `Rent a car`,
     price: 200
   },
   {
     type: `Check-in`,
-    name:`Add breakfast`,
+    name: `Add breakfast`,
     price: 50
   },
   {
     type: `Sightseeing`,
-    name:`Lunch in city`,
+    name: `Lunch in city`,
     price: 30
   },
   {
     type: `Sightseeing`,
-    name:`Book tickets`,
+    name: `Book tickets`,
     price: 40
   }
 ];
 
 const findOffer = (type) => {
   let results = [];
-  offers.forEach(element => {
+  offersList.forEach(element => {
     if (element.type === type) {
       results.push(element);
     }
   });
-  return getRandom(results);// offers.find(offer=>offer.type===type)
+  return results;// offers.find(offer=>offer.type===type)
 }
 
-class event {
+export class event {
   constructor() {
-    this.date = getRandomDate();
-    this.type = getRandom(eventTypes);
+    this.dateBegin = getRandomDate();
+    this.dateEnd = new Date(this.dateBegin.valueOf() + getRandomInteger(0.5 * 3600000, 52 * 3600000));
+    let type = getRandom(eventTypes);
+    this.type = type[0];
+    this.typeIconSrc = type[1];
     this.location = getRandom(eventLocations);
-    this.price = getRandomInteger(10,1000);
-    let offer = findOffer(this.type);
-    if (offer != undefined) {
-      this.offerName = offer.name;
-      this.offerPrice = offer.price;
+    this.price = getRandomInteger(10, 1000);
+    let offers = findOffer(this.type);
+    if (offers.length > 0) {
+      this.offers = offers;
     }
-    this.favority = false;
+    this.favority = Boolean(getRandomInteger());
   }
 }
