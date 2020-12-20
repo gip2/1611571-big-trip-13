@@ -8,7 +8,7 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 const getRandom = (array)=>{
-  return array[getRandomInteger(0,array.length-1)]
+  return array[getRandomInteger(0, array.length - 1)];
 };
 /* Array.prototype.getRandom = function(){
   let arr = this;
@@ -16,10 +16,10 @@ const getRandom = (array)=>{
 };*/
 
 
-const getRandomDate = (a = 1, b = 24*30) => {
+const getRandomDate = (a = 1, b = 24 * 30) => {
   let curDate = new Date();
-  let RandomMilliseconds=getRandomInteger(a*3600000,b*3600000);
-  let RandomDate = new Date(curDate.valueOf() + RandomMilliseconds)
+  let RandomMilliseconds = getRandomInteger(a * 3600000, b * 3600000);
+  let RandomDate = new Date(curDate.valueOf() + RandomMilliseconds);
   return RandomDate;
 };
 let eventDestinationDeskriptions = [
@@ -35,54 +35,28 @@ let eventDestinationDeskriptions = [
   `In rutrum ac purus sit amet tempus.`
 ];
 const eventDestinationDeskriptionGen = () => {
-  const sentenceNumber = getRandomInteger(0,5);
+  const sentenceNumber = getRandomInteger(0, 5);
   let eventDestinationDeskription = ``;
   for (let index = 0; index < sentenceNumber; index++) {
-    let sentence = eventDestinationDeskriptions[getRandomInteger(0,eventDestinationDeskriptions.length)];
-    eventDestinationDeskription += sentence;   
+    let sentence = eventDestinationDeskriptions[getRandomInteger(0, eventDestinationDeskriptions.length)];
+    eventDestinationDeskription += sentence;
   }
   return eventDestinationDeskription;
 };
 
 const eventDestinationPhotoGen = () => `http://picsum.photos/248/152?r=` + Math.random();
 
-var collection = {
-  2548: {
-    albumTitle: 'Slippery When Wet',
-    artist: 'Bon Jovi',
-    tracks: [
-      'Let It Rock',
-      'You Give Love a Bad Name'
-    ]
-  },
-  2468: {
-    albumTitle: '1999',
-    artist: 'Prince',
-    tracks: [
-      '1999',
-      'Little Red Corvette'
-    ]
-  },
-  1245: {
-    artist: 'Robert Palmer',
-    tracks: []
-  },
-  5439: {
-    albumTitle: 'ABBA Gold'
-  }
-};
-
 let eventTypes = [
-  [`Taxi`, `img/icons/taxi.png`],
-  [`Bus`, `img/icons/bus.png`],
-  [`Train`, `img/icons/train.png`],
-  [`Ship`, `img/icons/ship.png`],
-  [`Transport`, `img/icons/transport.png`],
-  [`Drive`, `img/icons/drive.png`],
-  [`Flight`, `img/icons/flight.png`],
-  [`CheckIn`, `img/icons/check-in.png`],
-  [`Sightseeing`, `img/icons/sightseeing.png`],
-  [`Restaurant`, `img/icons/restaurant.png`]
+  [`taxi`, `Taxi`, `img/icons/taxi.png`],
+  [`bus`, `Bus`, `img/icons/bus.png`],
+  [`train`, `Train`, `img/icons/train.png`],
+  [`ship`, `Ship`, `img/icons/ship.png`],
+  [`transport`, `Transport`, `img/icons/transport.png`],
+  [`drive`, `Drive`, `img/icons/drive.png`],
+  [`flight`, `Flight`, `img/icons/flight.png`],
+  [`check-in`, `CheckIn`, `img/icons/check-in.png`],
+  [`sightseeing`, `Sightseeing`, `img/icons/sightseeing.png`],
+  [`restaurant`, `Restaurant`, `img/icons/restaurant.png`]
 ];
 
 let eventLocations = [
@@ -93,7 +67,7 @@ let eventLocations = [
   `Parma`,
   `Istanbul`,
   `Moscow`,
-  `London`, 
+  `London`,
   `Saint Petersburg`,
   `Berlin`,
   `Madrid`,
@@ -111,42 +85,42 @@ let eventLocations = [
 
 let offersList = [
   {
-    type: `Taxi`,
+    type: `taxi`,
     name: `Switch to comfort`,
     price: 20
   },
   {
-    type: `Taxi`,
+    type: `taxi`,
     name: `Order Uber`,
     price: 20
   },
   {
-    type: `Flight`,
+    type: `flight`,
     name: `Add luggage`,
     price: 50
   },
   {
-    type: `Flight`,
+    type: `flight`,
     name: `Switch to comfort`,
     price: 60
   },
   {
-    type: `Drive`,
+    type: `drive`,
     name: `Rent a car`,
     price: 200
   },
   {
-    type: `Check-in`,
+    type: `check-in`,
     name: `Add breakfast`,
     price: 50
   },
   {
-    type: `Sightseeing`,
+    type: `sightseeing`,
     name: `Lunch in city`,
     price: 30
   },
   {
-    type: `Sightseeing`,
+    type: `sightseeing`,
     name: `Book tickets`,
     price: 40
   }
@@ -160,15 +134,16 @@ const findOffer = (type) => {
     }
   });
   return results;// offers.find(offer=>offer.type===type)
-}
+};
 
-export class event {
+export class Event {
   constructor() {
     this.dateBegin = getRandomDate();
     this.dateEnd = new Date(this.dateBegin.valueOf() + getRandomInteger(0.5 * 3600000, 52 * 3600000));
     let type = getRandom(eventTypes);
     this.type = type[0];
-    this.typeIconSrc = type[1];
+    this.typeText = type[1];
+    this.typeIconSrc = type[2];
     this.location = getRandom(eventLocations);
     this.price = getRandomInteger(10, 1000);
     let offers = findOffer(this.type);

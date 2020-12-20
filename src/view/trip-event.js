@@ -34,7 +34,8 @@ const createOffersListTemplate = (offers) => {
 const favoritySolidTemplate = (solidFlag) => {
   if (solidFlag) {
     return `--active`;
-  }// (event.favority ? `--active`)
+  }
+  return ``;
 };
 
 export const createTripEventTemplate = (event) =>
@@ -49,7 +50,7 @@ export const createTripEventTemplate = (event) =>
       `" alt="Event type icon">
     </div>
     <h3 class="event__title">` +
-    event.type + ` ` +
+    event.typeText + ` ` +
     event.location +
     `</h3>
     <div class="event__schedule">
