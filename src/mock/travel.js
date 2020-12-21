@@ -44,7 +44,19 @@ const eventDestinationDeskriptionGen = () => {
   return eventDestinationDeskription;
 };
 
-const eventDestinationPhotoGen = () => `http://picsum.photos/248/152?r=` + Math.random();
+const eventDestinationPhotoGen = () => {
+  const s=String(Math.random());
+  return `http://picsum.photos/248/152?r=${s}`;
+}
+
+const createEventPhotos = () => {
+  let photos = [];
+  const photoNumber = getRandomInteger(0, 5);
+  for (let index = 0; index < photoNumber; index++) {
+    photos.push(eventDestinationPhotoGen());
+  }
+  return photos;
+}
 
 let eventTypes = [
   [`taxi`, `Taxi`, `img/icons/taxi.png`],
@@ -86,49 +98,57 @@ let eventLocations = [
 let offersList = [
   {
     type: `taxi`,
-    name: `Switch to comfort`,
-    price: 20
+    title: `Switch to comfort`,
+    price: 20,
+    checked: false
   },
   {
     type: `taxi`,
-    name: `Order Uber`,
-    price: 20
+    title: `Order Uber`,
+    price: 20,
+    checked: false
   },
   {
     type: `flight`,
-    name: `Add luggage`,
-    price: 50
+    title: `Add luggage`,
+    price: 50,
+    checked: false
   },
   {
     type: `flight`,
-    name: `Switch to comfort`,
-    price: 60
+    title: `Switch to comfort`,
+    price: 60,
+    checked: false
   },
   {
     type: `drive`,
-    name: `Rent a car`,
-    price: 200
+    title: `Rent a car`,
+    price: 200,
+    checked: false
   },
   {
     type: `check-in`,
-    name: `Add breakfast`,
-    price: 50
+    title: `Add breakfast`,
+    price: 50,
+    checked: false
   },
   {
     type: `sightseeing`,
-    name: `Lunch in city`,
-    price: 30
+    title: `Lunch in city`,
+    price: 30,
+    checked: false
   },
   {
     type: `sightseeing`,
-    name: `Book tickets`,
-    price: 40
+    title: `Book tickets`,
+    price: 40,
+    checked: false
   }
 ];
 
 const findOffer = (type) => {
   let results = [];
-  offersList.forEach(element => {
+  offersList.forEach((element) => {
     if (element.type === type) {
       results.push(element);
     }
@@ -145,10 +165,18 @@ export class Event {
     this.typeText = type[1];
     this.typeIconSrc = type[2];
     this.location = getRandom(eventLocations);
+    this.destinationDescription = eventDestinationDeskriptionGen();
     this.price = getRandomInteger(10, 1000);
     let offers = findOffer(this.type);
     if (offers.length > 0) {
       this.offers = offers;
+      offers.forEach((element) => {
+        element.checked = Boolean(getRandomInteger());
+      });
+    }
+    const photos = createEventPhotos();
+    if (photos.length > 0) {
+      this.photos = photos;
     }
     this.favority = Boolean(getRandomInteger());
   }

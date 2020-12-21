@@ -24,9 +24,9 @@ const createOffersListTemplate = (offers) => {
   if (offers !== undefined) {
     let liString = ``;
     offers.forEach((element) => {
-      const {name, price} = element;
+      const {title, price} = element;
       liString += `<li class="event__offer">
-        <span class="event__offer-title">${name}</span>
+        <span class="event__offer-title">${title}</span>
         +€&nbsp;
         <span class="event__offer-price">${price}</span>
       </li>`;
