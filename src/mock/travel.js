@@ -71,7 +71,7 @@ let eventTypes = [
   [`restaurant`, `Restaurant`, `img/icons/restaurant.png`]
 ];
 
-let eventLocations = [
+let eventDestinations = [
   `Amsterdam`,
   `Shamonix`,
   `Geneva`,
@@ -164,7 +164,7 @@ export class Event {
     this.type = type[0];
     this.typeText = type[1];
     this.typeIconSrc = type[2];
-    this.location = getRandom(eventLocations);
+    this.destination = getRandom(eventDestinations);
     this.destinationDescription = eventDestinationDeskriptionGen();
     this.price = getRandomInteger(10, 1000);
     let offers = findOffer(this.type);

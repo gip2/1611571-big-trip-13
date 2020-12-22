@@ -22,7 +22,7 @@ const siteMenuElement = document.querySelector(`#menu`);
 const siteFiltersElement = document.querySelector(`#filters`);
 const siteTripEventsHead = document.querySelector(`#tripEvents`);
 const siteTripEventsSection = document.querySelector(`.trip-events`);
-render(siteTripMainElement, createInfoHeadTemplate(), `afterbegin`);
+render(siteTripMainElement, createInfoHeadTemplate(events), `afterbegin`);
 render(siteMenuElement, createMenuTemplate(), `afterend`);
 render(siteFiltersElement, createFiltersTemplate(), `afterend`);
 render(siteTripEventsHead, createSortTemplate(), `afterend`);
@@ -30,8 +30,14 @@ render(siteTripEventsSection, createTripEventListTemplate());
 const siteTripEventsList = document.querySelector(`.trip-events__list`);
 render(siteTripEventsList, createEditEventTemplate(events[0]));
 
-events.forEach(element => {
+events.forEach((element) => {
   render(siteTripEventsList, createTripEventTemplate(element));
 });
 
 
+// import flatpickr from "flatpickr";
+// // Otherwise, selectors are also supported
+// flatpickr("#myID", {
+//   minDate: "today",
+//   maxDate: new Date().fp_incr(14) // 14 days from now
+// });

@@ -1,3 +1,5 @@
+import flatpickr from "flatpickr";
+
 let eventTypes = [
   [`taxi`, `Taxi`, `img/icons/taxi.png`],
   [`bus`, `Bus`, `img/icons/bus.png`],
@@ -11,7 +13,7 @@ let eventTypes = [
   [`restaurant`, `Restaurant`, `img/icons/restaurant.png`]
 ];
 
-let eventLocations = [
+let eventDestinations = [
   `Amsterdam`,
   `Shamonix`,
   `Geneva`,
@@ -48,16 +50,20 @@ const createEventTypeList = (eventTypes, event) => {
   return s;
 };
 
-const createDestinationList = (eventLocations, event) => {
+const createDestinationList = (eventDestinations, event) => {
   let s = ``;
-  eventLocations.forEach((element) => 
+  eventDestinations.forEach((element) => 
   {s += `<option value="${element}"></option>`});
   return s;
 };
 
-const createDateTimeString = (date) => `${date.getDate()}/${(date.getMonth() + 1)}/${String(date.getFullYear()).slice(2,4)} ${String(date.toTimeString()).slice(0, 5)}`;
-// 19/03/19 00:00
-
+const createDateTimeString = (date) => {
+  let s=``;
+  if(date!==undefined) {
+    s = `${date.getDate()}/${(date.getMonth() + 1)}/${String(date.getFullYear()).slice(2,4)} ${String(date.toTimeString()).slice(0, 5)}`;
+  }
+  return s;
+}// 19/03/19 00:00
 
 const createEventOfferSelector = (offers) => {
   let s = ``;
@@ -90,7 +96,7 @@ const createPhotoContainerTemplate = (photos) => {
 };
 
 export const createEditEventTemplate = (event) => {
-  const {typeIconSrc, typeText, location, destinationDescription, dateBegin, dateEnd, price, offers, photos} = event;
+  const {typeIconSrc, typeText, destination, destinationDescription, dateBegin, dateEnd, price, offers, photos} = event;
   return `<form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -112,9 +118,9 @@ export const createEditEventTemplate = (event) => {
         <label class="event__label  event__type-output" for="event-destination-1">
           ${typeText}
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${location}" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${createDestinationList(eventLocations, event)}
+          ${createDestinationList(eventDestinations, event)}
         </datalist>
       </div>
 

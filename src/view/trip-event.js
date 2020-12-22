@@ -1,4 +1,4 @@
-const getMonthAndDay = (date) => date.toDateString().slice(4, 10).toUpperCase();
+export const getMonthAndDay = (date) => date.toDateString().slice(4, 10).toUpperCase();
 const getTime = (date) => date.toTimeString().slice(0, 5);
 
 const msecInSecond = 1000;
@@ -43,13 +43,13 @@ const favoritySolidTemplate = (solidFlag) => {
 };
 
 export const createTripEventTemplate = (event) => {
-  const {dateBegin, typeIconSrc, typeText, location, dateEnd, price,offers, favority} = event;
+  const {dateBegin, typeIconSrc, typeText, destination, dateEnd, price,offers, favority} = event;
   return `<div class="event">
     <time class="event__date" datetime=${dateBegin}>${getMonthAndDay(dateBegin)}</time>
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="${typeIconSrc}" alt="Event type icon">
     </div>
-    <h3 class="event__title">${typeText} ${location}</h3>
+    <h3 class="event__title">${typeText} ${destination}</h3>
     <div class="event__schedule">
       <p class="event__time">
         <time class="event__start-time" datetime="${dateBegin}">${getTime(dateBegin)}</time>
