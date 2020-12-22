@@ -15,7 +15,7 @@ let events = [];
 for (let index = 0; index < 10; index++) {
   events.push(new Event());
 }
-console.log(events);
+// console.log(events);
 
 const siteTripMainElement = document.querySelector(`.trip-main`);
 const siteMenuElement = document.querySelector(`#menu`);

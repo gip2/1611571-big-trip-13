@@ -1,6 +1,6 @@
-import flatpickr from "flatpickr";
+// import flatpickr from "flatpickr";
 
-let eventTypes = [
+let eventTypesList = [
   [`taxi`, `Taxi`, `img/icons/taxi.png`],
   [`bus`, `Bus`, `img/icons/bus.png`],
   [`train`, `Train`, `img/icons/train.png`],
@@ -13,7 +13,7 @@ let eventTypes = [
   [`restaurant`, `Restaurant`, `img/icons/restaurant.png`]
 ];
 
-let eventDestinations = [
+let eventDestinationsList = [
   `Amsterdam`,
   `Shamonix`,
   `Geneva`,
@@ -46,39 +46,48 @@ const createEventTypeList = (eventTypes, event) => {
               <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${(type === event.type) ? `checked` : ``}>
               <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${text}</label>
             </div>
-`});
+`;
+  });
   return s;
 };
 
-const createDestinationList = (eventDestinations, event) => {
+const createDestinationList = (eventDestinations) => {
   let s = ``;
-  eventDestinations.forEach((element) => 
-  {s += `<option value="${element}"></option>`});
+  eventDestinations.forEach((element) => {
+    s += `<option value="${element}"></option>`;
+  });
   return s;
 };
 
 const createDateTimeString = (date) => {
-  let s=``;
-  if(date!==undefined) {
-    s = `${date.getDate()}/${(date.getMonth() + 1)}/${String(date.getFullYear()).slice(2,4)} ${String(date.toTimeString()).slice(0, 5)}`;
+  let s = ``;
+  if (date !== undefined) {
+    s = `${date.getDate()}/${(date.getMonth() + 1)}/${String(date.getFullYear()).slice(2, 4)} ${String(date.toTimeString()).slice(0, 5)}`;
   }
   return s;
-}// 19/03/19 00:00
+};// 19/03/19 00:00
 
 const createEventOfferSelector = (offers) => {
-  let s = ``;
+  let s = `
+  <section class="event__section  event__section--offers">
+  <h3 class="event__section-title  event__section-title--offers">Offers</h3>    
+  <div class="event__available-offers">`;
   offers.forEach((element) => {
-    const {type,title,price,checked} = element;
-    s += `<div class="event__available-offers">
-  <div class="event__offer-selector">
-    <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}"${checked ? `checked=""` : ` `}>
-    <label class="event__offer-label" for="event-offer-${type}-1">
-      <span class="event__offer-title">Add ${title}</span>
-      +€&nbsp;
-      <span class="event__offer-price">${price}</span>
-    </label>
-  </div>
-  `});
+    const {type, title, price, checked} = element;
+    s += `
+        <div class="event__offer-selector">
+          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}"${checked ? `checked=""` : ` `}>
+          <label class="event__offer-label" for="event-offer-${type}-1">
+            <span class="event__offer-title">Add ${title}</span>
+            +€&nbsp;
+            <span class="event__offer-price">${price}</span>
+          </label>
+        </div>
+    `;
+  });
+  s += `
+    </div>
+  </section>`;
   return s;
 };
 
@@ -109,7 +118,7 @@ export const createEditEventTemplate = (event) => {
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-            ${createEventTypeList(eventTypes, event)}
+            ${createEventTypeList(eventTypesList, event)}
           </fieldset>
         </div>
       </div>
@@ -120,7 +129,7 @@ export const createEditEventTemplate = (event) => {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${createDestinationList(eventDestinations, event)}
+          ${createDestinationList(eventDestinationsList, event)}
         </datalist>
       </div>
 
@@ -144,18 +153,12 @@ export const createEditEventTemplate = (event) => {
       <button class="event__reset-btn" type="reset">Cancel</button>
     </header>
     <section class="event__details">
-      <section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-        ${(event.hasOwnProperty('offers') !== false) ? createEventOfferSelector(offers) : ``}
-        
-      </section>
-
+      ${(event.hasOwnProperty(`offers`) !== false) ? createEventOfferSelector(offers) : ``}
       <section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${destinationDescription}</p>
+        ${(destinationDescription.length > 0) ? `<h3 class="event__section-title  event__section-title--destination">Destination</h3>
+        <p class="event__destination-description">${destinationDescription}</p>` : ``}
 
-        ${(event.hasOwnProperty('photos') !== false) ? createPhotoContainerTemplate(photos) : ``}
+        ${(event.hasOwnProperty(`photos`) !== false) ? createPhotoContainerTemplate(photos) : ``}
         
       </section>
     </section>

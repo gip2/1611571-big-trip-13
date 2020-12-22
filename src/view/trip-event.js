@@ -43,7 +43,7 @@ const favoritySolidTemplate = (solidFlag) => {
 };
 
 export const createTripEventTemplate = (event) => {
-  const {dateBegin, typeIconSrc, typeText, destination, dateEnd, price,offers, favority} = event;
+  const {dateBegin, typeIconSrc, typeText, destination, dateEnd, price, offers, favority} = event;
   return `<div class="event">
     <time class="event__date" datetime=${dateBegin}>${getMonthAndDay(dateBegin)}</time>
     <div class="event__type">
@@ -72,4 +72,5 @@ export const createTripEventTemplate = (event) => {
     <button class="event__rollup-btn" type="button">
       <span class="visually-hidden">Open event</span>
     </button>
-  </div>`};
+  </div>`;
+};

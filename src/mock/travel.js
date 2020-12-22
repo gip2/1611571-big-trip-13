@@ -45,9 +45,9 @@ const eventDestinationDeskriptionGen = () => {
 };
 
 const eventDestinationPhotoGen = () => {
-  const s=String(Math.random());
+  const s = String(Math.random());
   return `http://picsum.photos/248/152?r=${s}`;
-}
+};
 
 const createEventPhotos = () => {
   let photos = [];
@@ -56,7 +56,7 @@ const createEventPhotos = () => {
     photos.push(eventDestinationPhotoGen());
   }
   return photos;
-}
+};
 
 let eventTypes = [
   [`taxi`, `Taxi`, `img/icons/taxi.png`],
