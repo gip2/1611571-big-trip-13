@@ -1,62 +1,22 @@
 // import flatpickr from "flatpickr";
+import {eventTypeList} from "../mock/travel.js";
+import {eventDestinationList} from "../mock/travel.js";
 
-let eventTypesList = [
-  [`taxi`, `Taxi`, `img/icons/taxi.png`],
-  [`bus`, `Bus`, `img/icons/bus.png`],
-  [`train`, `Train`, `img/icons/train.png`],
-  [`ship`, `Ship`, `img/icons/ship.png`],
-  [`transport`, `Transport`, `img/icons/transport.png`],
-  [`drive`, `Drive`, `img/icons/drive.png`],
-  [`flight`, `Flight`, `img/icons/flight.png`],
-  [`check-in`, `CheckIn`, `img/icons/check-in.png`],
-  [`sightseeing`, `Sightseeing`, `img/icons/sightseeing.png`],
-  [`restaurant`, `Restaurant`, `img/icons/restaurant.png`]
-];
-
-let eventDestinationsList = [
-  `Amsterdam`,
-  `Shamonix`,
-  `Geneva`,
-  `Paris`,
-  `Parma`,
-  `Istanbul`,
-  `Moscow`,
-  `London`,
-  `Saint Petersburg`,
-  `Berlin`,
-  `Madrid`,
-  `Rome`,
-  `Bucharest`,
-  `Minsk`,
-  `Vienna`,
-  `Hamburg`,
-  `Warsaw`,
-  `Budapest`,
-  `Barcelona`,
-  `Munich`,
-  `Milan`
-];
-
-
-const createEventTypeList = (eventTypes, event) => {
-  let s = ``;
-  eventTypes.forEach((element) => {
+const createEventTypeGroup = (eventTypes, event) => {
+  return eventTypes.reduce((accumulator, element) => {
     const {type, text} = element;
-    s += `<div class="event__type-item">
+    return accumulator + `<div class="event__type-item">
               <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${(type === event.type) ? `checked` : ``}>
               <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${text}</label>
             </div>
-`;
-  });
-  return s;
+    `;
+  }, ``);
 };
 
-const createDestinationList = (eventDestinations) => {
-  let s = ``;
-  eventDestinations.forEach((element) => {
-    s += `<option value="${element}"></option>`;
-  });
-  return s;
+const createDestinationGroup = (eventDestinations) => {
+  return eventDestinations.reduce((accumulator, element) => {
+    return accumulator + `<option value="${element}"></option>`;
+  }, ``);
 };
 
 const createDateTimeString = (date) => {
@@ -68,40 +28,37 @@ const createDateTimeString = (date) => {
 };// 19/03/19 00:00
 
 const createEventOfferSelector = (offers) => {
-  let s = `
-  <section class="event__section  event__section--offers">
-  <h3 class="event__section-title  event__section-title--offers">Offers</h3>    
-  <div class="event__available-offers">`;
-  offers.forEach((element) => {
-    const {type, title, price, checked} = element;
-    s += `
-        <div class="event__offer-selector">
-          <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}"${checked ? `checked=""` : ` `}>
-          <label class="event__offer-label" for="event-offer-${type}-1">
-            <span class="event__offer-title">Add ${title}</span>
-            +€&nbsp;
-            <span class="event__offer-price">${price}</span>
-          </label>
-        </div>
+  const offerSelectorItems = offers.reduce((accumulator, offer) => {
+    const {type, title, price, checked} = offer;
+    return accumulator + `
+    <div class="event__offer-selector">
+        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${type}-1" type="checkbox" name="event-offer-${type}"${checked ? `checked=""` : ` `}>
+        <label class="event__offer-label" for="event-offer-${type}-1">
+          <span class="event__offer-title">Add ${title}</span>
+          +€&nbsp;
+          <span class="event__offer-price">${price}</span>
+        </label>
+    </div>
     `;
-  });
-  s += `
+  }, ``);
+  return `<section class="event__section  event__section--offers">
+    <h3 class="event__section-title  event__section-title--offers">Offers</h3>    
+    <div class="event__available-offers">
+      ${offerSelectorItems}
     </div>
   </section>`;
-  return s;
 };
 
 const createPhotoContainerTemplate = (photos) => {
-  let s = `<div class="event__photos-container">
-  <div class="event__photos-tape">
-    `;
-  photos.forEach((element) => {
-    s += `<img class="event__photo" src="${element}" alt="Event photo">`;
-  });
-  s += `
-  </div>
-</div>`;
-  return s;
+  const photosTape = photos.reduce((accumulator,element) => {
+    return accumulator + `<img class="event__photo" src="${element}" alt="Event photo">`;
+  }, ``);
+
+  return `<div class="event__photos-container">
+    <div class="event__photos-tape">
+      ${photosTape}
+    </div>
+  </div>`;
 };
 
 export const createEditEventTemplate = (event) => {
@@ -118,7 +75,7 @@ export const createEditEventTemplate = (event) => {
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-            ${createEventTypeList(eventTypesList, event)}
+            ${createEventTypeGroup(eventTypeList, event)}
           </fieldset>
         </div>
       </div>
@@ -129,7 +86,7 @@ export const createEditEventTemplate = (event) => {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${createDestinationList(eventDestinationsList, event)}
+          ${createDestinationGroup(eventDestinationList, event)}
         </datalist>
       </div>
 
