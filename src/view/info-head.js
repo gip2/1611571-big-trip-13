@@ -1,4 +1,7 @@
 import {getMonthAndDay} from "./trip-event.js";
+const EVENTS_INFO_LENGTH_SHORT = 1;
+const EVENTS_INFO_LENGTH_TWO = 2;
+const EVENTS_INFO_LENGTH_THREE = 3;
 
 const calculateInfoEvents = (events) => {
   let info = {
@@ -8,13 +11,13 @@ const calculateInfoEvents = (events) => {
   };
   if (events !== undefined && events.length) {
     switch (events.length) {
-      case 1:
+      case EVENTS_INFO_LENGTH_SHORT:
         info.title = events[0].destination;
         break;
-      case 2:
+      case EVENTS_INFO_LENGTH_TWO:
         info.title = `${events[0].destination} &mdash; ${events[1].destination}`;
         break;
-      case 3:
+      case EVENTS_INFO_LENGTH_THREE:
         info.title = `${events[0].destination} &mdash; ${events[1].destination} &mdash; ${events[2].destination}`;
         break;
       default:
