@@ -50,7 +50,7 @@ const createEventOfferSelector = (offers) => {
 };
 
 const createPhotoContainerTemplate = (photos) => {
-  const photosTape = photos.reduce((accumulator,element) => {
+  const photosTape = photos.reduce((accumulator, element) => {
     return accumulator + `<img class="event__photo" src="${element}" alt="Event photo">`;
   }, ``);
 
