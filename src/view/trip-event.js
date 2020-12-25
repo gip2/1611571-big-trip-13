@@ -21,20 +21,20 @@ const durationTemplate = (date1, date2) => {
 };
 
 const createOffersListTemplate = (offers) => {
-  if (offers !== undefined) {
-    let liString = ``;
-    offers.forEach((element) => {
-      const {title, price} = element;
-      liString += `<li class="event__offer">
+  if (!offers) {
+    return ``;
+  }
+  const liString = offers.reduce((accumulator, element) => {
+    const {title, price} = element;
+    return accumulator + `<li class="event__offer">
         <span class="event__offer-title">${title}</span>
         +€&nbsp;
         <span class="event__offer-price">${price}</span>
       </li>`;
-    });
-    return `<ul class="event__selected-offers">${liString}</ul>`;
-  }
-  return ``;
+  }, ``);
+  return `<ul class="event__selected-offers">${liString}</ul>`;
 };
+
 const favoritySolidTemplate = (solidFlag) => {
   if (solidFlag) {
     return `--active`;
@@ -42,8 +42,9 @@ const favoritySolidTemplate = (solidFlag) => {
   return ``;
 };
 
-export const createTripEventTemplate = (event) => {
-  const {dateBegin, typeIconSrc, typeText, destination, dateEnd, price, offers, favority} = event;
+export const createTripEventTemplate = ({
+  dateBegin, typeIconSrc, typeText, destination, dateEnd, price, offers, favority
+}) => {
   return `<div class="event">
     <time class="event__date" datetime=${dateBegin}>${getMonthAndDay(dateBegin)}</time>
     <div class="event__type">
