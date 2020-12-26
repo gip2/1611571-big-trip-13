@@ -1,4 +1,4 @@
-export const eventTypeList = [
+export const EVENT_TYPE_LIST = [
   [`taxi`, `Taxi`, `img/icons/taxi.png`],
   [`bus`, `Bus`, `img/icons/bus.png`],
   [`train`, `Train`, `img/icons/train.png`],
@@ -11,7 +11,7 @@ export const eventTypeList = [
   [`restaurant`, `Restaurant`, `img/icons/restaurant.png`]
 ];
 
-export const eventDestinationList = [
+export const EVENT_DESTINATION_LIST = [
   `Amsterdam`,
   `Shamonix`,
   `Geneva`,
@@ -35,7 +35,7 @@ export const eventDestinationList = [
   `Milan`
 ];
 
-const eventDestinationDeskriptions = [
+const EVENT_DESTINATION_DESCRIPTION_LISTS = [
   `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
   `Cras aliquet varius magna, non porta ligula feugiat eget.`,
   `Fusce tristique felis at fermentum pharetra.`,
@@ -55,8 +55,8 @@ const DAY_PER_MONTH = 30;
 const MSEC_PER_HOUR = 3600000;
 const MIN_HOURS = 1;
 const MAX_HOURS = HOUR_PER_DAY * DAY_PER_MONTH;
-const minDestinationDeskriptionNum = 0;
-const maxDestinationDeskriptionNum = 5;
+const minDestinationDescriptonNum = 0;
+const maxDestinationDescriptonNum = 5;
 const HOURS_DATE_END_MIN = 0.5;
 const HOURS_DATE_END_MAX = 52;
 
@@ -81,14 +81,14 @@ const getRandomDate = (minHours = MIN_HOURS, maxHours = MAX_HOURS) => {
   return randomDate;
 };
 
-const eventDestinationDeskriptionGen = () => {
-  const sentenceNumber = getRandomInteger(minDestinationDeskriptionNum, maxDestinationDeskriptionNum);
-  let eventDestinationDeskription = ``;
+const eventDestinationDescriptonGen = () => {
+  const sentenceNumber = getRandomInteger(minDestinationDescriptonNum, maxDestinationDescriptonNum);
+  let eventDestinationDescripton = ``;
   for (let index = 0; index < sentenceNumber; index++) {
-    let sentence = eventDestinationDeskriptions[getRandomInteger(0, eventDestinationDeskriptions.length)];
-    eventDestinationDeskription += sentence;
+    let sentence = EVENT_DESTINATION_DESCRIPTION_LISTS[getRandomInteger(0, EVENT_DESTINATION_DESCRIPTION_LISTS.length)];
+    eventDestinationDescripton += sentence;
   }
-  return eventDestinationDeskription;
+  return eventDestinationDescripton;
 };
 
 const eventDestinationPhotoGen = () => {
@@ -170,12 +170,12 @@ export class Event {
   constructor() {
     this.dateBegin = getRandomDate();
     this.dateEnd = new Date(this.dateBegin.valueOf() + getRandomInteger(HOURS_DATE_END_MIN * MSEC_PER_HOUR, HOURS_DATE_END_MAX * MSEC_PER_HOUR));
-    let type = getRandom(eventTypeList);
+    let type = getRandom(EVENT_TYPE_LIST);
     this.type = type[0];
     this.typeText = type[1];
     this.typeIconSrc = type[2];
-    this.destination = getRandom(eventDestinationList);
-    this.destinationDescription = eventDestinationDeskriptionGen();
+    this.destination = getRandom(EVENT_DESTINATION_LIST);
+    this.destinationDescription = eventDestinationDescriptonGen();
     this.price = getRandomInteger(10, 1000);
     let offers = findOffer(this.type);
     if (offers.length > 0) {

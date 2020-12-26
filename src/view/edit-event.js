@@ -1,6 +1,6 @@
 // import flatpickr from "flatpickr";
-import {eventTypeList} from "../mock/travel.js";
-import {eventDestinationList} from "../mock/travel.js";
+import {EVENT_TYPE_LIST} from "../mock/travel.js";
+import {EVENT_DESTINATION_LIST} from "../mock/travel.js";
 
 const createEventTypeGroup = (eventTypes, event) => {
   return eventTypes.reduce((accumulator, element) => {
@@ -75,7 +75,7 @@ export const createEditEventTemplate = (event) => {
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-            ${createEventTypeGroup(eventTypeList, event)}
+            ${createEventTypeGroup(EVENT_TYPE_LIST, event)}
           </fieldset>
         </div>
       </div>
@@ -86,7 +86,7 @@ export const createEditEventTemplate = (event) => {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${createDestinationGroup(eventDestinationList, event)}
+          ${createDestinationGroup(EVENT_DESTINATION_LIST, event)}
         </datalist>
       </div>
 
