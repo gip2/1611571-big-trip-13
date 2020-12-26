@@ -2,9 +2,11 @@ export const getMonthAndDay = (date) => date.toDateString().slice(4, 10).toUpper
 const getTime = (date) => date.toTimeString().slice(0, 5);
 
 const msecInSecond = 1000;
-const msecInMinute = 60 * msecInSecond;
+const secInMin = 60;
+const msecInMinute = secInMin * msecInSecond;
 const minutesInHour = 60;
-const minutesInDay = 24 * minutesInHour;
+const hoursInDay = 24;
+const minutesInDay = hoursInDay * minutesInHour;
 
 const durationTemplate = (date1, date2) => {
   let durationMinutes = Math.floor((date2 - date1) / msecInMinute);

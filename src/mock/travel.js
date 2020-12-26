@@ -1,3 +1,7 @@
+const PRICE_MIN = 10;
+const PRICE_MAX = 1000;
+
+
 export const EVENT_TYPE_LIST = [
   [`taxi`, `Taxi`, `img/icons/taxi.png`],
   [`bus`, `Bus`, `img/icons/bus.png`],
@@ -176,7 +180,7 @@ export class Event {
     this.typeIconSrc = type[2];
     this.destination = getRandom(EVENT_DESTINATION_LIST);
     this.destinationDescription = eventDestinationDescriptonGen();
-    this.price = getRandomInteger(10, 1000);
+    this.price = getRandomInteger(PRICE_MIN, PRICE_MAX);
     let offers = findOffer(this.type);
     if (offers.length > 0) {
       this.offers = offers;

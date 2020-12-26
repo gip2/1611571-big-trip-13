@@ -1,3 +1,5 @@
+const EVENT_NUM = 10;
+
 import {createMenuTemplate} from "./view/menu.js";
 import {createInfoHeadTemplate} from "./view/info-head.js";
 import {createFiltersTemplate} from "./view/filters.js";
@@ -12,7 +14,7 @@ const render = (container, template, place = `beforeend`) => {
 };
 
 let events = [];
-for (let index = 0; index < 10; index++) {
+for (let index = 0; index < EVENT_NUM; index++) {
   events.push(new Event());
 }
 // console.log(events);
