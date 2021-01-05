@@ -12,6 +12,7 @@ import EditEventView from "./view/edit-event.js";
 import TripEventView from "./view/trip-event.js";
 import {Event} from "./mock/travel.js";
 import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
+import { debug } from "webpack";
 
 
 let events = [];
@@ -27,7 +28,6 @@ const siteTripEventsHead = document.querySelector(`#tripEvents`);
 const siteTripEventsSection = document.querySelector(`.trip-events`);
 
 renderTemplate(siteTripMainElement, new InfoHeadView().getElement(), RenderPosition.BEFOREEND);
-
 renderTemplate(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.AFTEREND);
 
 const filterBoardComponent = new FilterBoardView();
@@ -39,14 +39,11 @@ const sortBoardComponent = new SortBoardView();
 renderElement(siteTripEventsHead, sortBoardComponent.getElement(), RenderPosition.AFTERBEGIN);
 renderElement(sortBoardComponent.getElement(), new SortView().getElement(), RenderPosition.AFTERBEGIN);
 
-//////////////////////////
 const tripEventListComponent = new TripEventListView();
 renderElement(siteTripEventsSection, tripEventListComponent.getElement(), RenderPosition.AFTERBEGIN);
 renderElement(tripEventListComponent.getElement(), new EditEventView().getElement(), RenderPosition.AFTERBEGIN);
 
-events.forEach((element) => { 
-  renderElement(tripEventListComponent.getElement(), new TripEventView().getElement(), RenderPosition.BEFOREEND);
-});
+events.forEach((event) => renderElement(tripEventListComponent.getElement(), new TripEventView().getElement(event), RenderPosition.BEFOREEND));
 
 
 // import flatpickr from "flatpickr";

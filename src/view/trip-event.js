@@ -80,8 +80,8 @@ export default class TripEventView {
   constructor() {
     this._element = null;
   }
-  getTemplate() {
-    return createTripEventTemplate();
+  getTemplate(event) {
+    return createTripEventTemplate(event);
   }
   getElement() {
     if (!this._element) {

@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
@@ -16,7 +16,7 @@ export const renderElement = (container, element, place) => {
   }
 };
 
-export const renderTemplate = (container, template, place = BEFOREEND) => {
+export const renderTemplate = (container, template, place = RenderPosition.BEFOREEND) => {
   container.insertAdjacentHTML(place, template);
 };
 

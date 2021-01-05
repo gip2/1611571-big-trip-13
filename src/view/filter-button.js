@@ -1,6 +1,6 @@
 import {createElement} from "../utils.js";
 
-const createFilterButtonTemplate = () => <button class="visually-hidden" type="submit">Accept filter</button>;
+const createFilterButtonTemplate = () => `<button class="visually-hidden" type="submit">Accept filter</button>`;
 
 export default class FilterButtonView {
   constructor() {
