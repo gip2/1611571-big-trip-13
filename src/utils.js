@@ -16,7 +16,7 @@ export const renderElement = (container, element, place) => {
   }
 };
 
-export const renderTemplate = (container, template, place) => {
+export const renderTemplate = (container, template, place = BEFOREEND) => {
   container.insertAdjacentHTML(place, template);
 };
 
@@ -34,6 +34,3 @@ export const createElement = (template) => {
 // то есть быть чем-то вроде <nav><a>Link 1</a><a>Link 2</a></nav>,
 // а не просто <a>Link 1</a><a>Link 2</a>
 
-// Функция из интернета по генерации случайного числа из диапазона
-// Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_random
-export const getRandomInteger = (a = 0, b = 1) => {
