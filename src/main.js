@@ -7,9 +7,9 @@ import FilterView from "./view/filters.js";
 import FilterButtonView from "./view/filter-button";
 import SortBoardView from "./view/sort-board.js";
 import SortView from "./view/sort.js";
-import {createTripEventTemplate} from "./view/trip-event.js";
-import {createTripEventListTemplate} from "./view/trip-event-list.js";
-import {createEditEventTemplate} from "./view/edit-event.js";
+import TripEventListView from "./view/trip-event-list.js";
+import EditEventView from "./view/edit-event.js";
+import TripEventView from "./view/trip-event.js";
 import {Event} from "./mock/travel.js";
 import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
 
@@ -30,23 +30,22 @@ renderTemplate(siteTripMainElement, new InfoHeadView().getElement(), RenderPosit
 
 renderTemplate(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.AFTEREND);
 
-const FilterBoardComponent = new FilterBoardView();
-renderElement(siteFiltersElement, FilterBoardComponent.getElement(), RenderPosition.BEFOREEND);
-renderElement(FilterBoardComponent.getElement(), new FilterView().getElement(), RenderPosition.AFTERBEGIN);
-renderElement(FilterBoardComponent.getElement(), new FilterButtonView().getElement(), RenderPosition.BEFOREEND);
+const filterBoardComponent = new FilterBoardView();
+renderElement(siteFiltersElement, filterBoardComponent.getElement(), RenderPosition.BEFOREEND);
+renderElement(filterBoardComponent.getElement(), new FilterView().getElement(), RenderPosition.AFTERBEGIN);
+renderElement(filterBoardComponent.getElement(), new FilterButtonView().getElement(), RenderPosition.BEFOREEND);
 
-const SortBoardComponent = new SortBoardView();
-renderElement(siteTripEventsHead, SortBoardComponent.getElement(), RenderPosition.AFTERBEGIN);
-renderElement(SortBoardComponent.getElement(), new SortView().getElement(), RenderPosition.AFTERBEGIN);
+const sortBoardComponent = new SortBoardView();
+renderElement(siteTripEventsHead, sortBoardComponent.getElement(), RenderPosition.AFTERBEGIN);
+renderElement(sortBoardComponent.getElement(), new SortView().getElement(), RenderPosition.AFTERBEGIN);
 
+//////////////////////////
+const tripEventListComponent = new TripEventListView();
+renderElement(siteTripEventsSection, tripEventListComponent.getElement(), RenderPosition.AFTERBEGIN);
+renderElement(tripEventListComponent.getElement(), new EditEventView().getElement(), RenderPosition.AFTERBEGIN);
 
-
-renderTemplate(siteTripEventsSection, createTripEventListTemplate());
-const siteTripEventsList = document.querySelector(`.trip-events__list`);
-renderTemplate(siteTripEventsList, createEditEventTemplate(events[0]));
-
-events.forEach((element) => {
-  renderTemplate(siteTripEventsList, createTripEventTemplate(element));
+events.forEach((element) => { 
+  renderElement(tripEventListComponent.getElement(), new TripEventView().getElement(), RenderPosition.BEFOREEND);
 });
 
 

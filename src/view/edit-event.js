@@ -1,4 +1,5 @@
 // import flatpickr from "flatpickr";
+import {createElement} from "../utils.js";
 import {EVENT_TYPE_LIST} from "../mock/travel.js";
 import {EVENT_DESTINATION_LIST} from "../mock/travel.js";
 
@@ -61,7 +62,7 @@ const createPhotoContainerTemplate = (photos) => {
   </div>`;
 };
 
-export const createEditEventTemplate = (event) => {
+const createEditEventTemplate = (event) => {
   const {typeIconSrc, typeText, destination, destinationDescription, dateBegin, dateEnd, price, offers, photos} = event;
   return `<form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -121,3 +122,22 @@ export const createEditEventTemplate = (event) => {
     </section>
   </form>`;
 };
+
+
+export default class EditEventView {
+  constructor() {
+    this._element = null;
+  }
+  getTemplate() {
+    return createEditEventTemplate();
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}
