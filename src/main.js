@@ -12,8 +12,6 @@ import EditEventView from "./view/edit-event.js";
 import TripEventView from "./view/trip-event.js";
 import {Event} from "./mock/travel.js";
 import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
-import { debug } from "webpack";
-
 
 let events = [];
 for (let index = 0; index < EVENT_NUM; index++) {
@@ -26,6 +24,42 @@ const siteMenuElement = document.querySelector(`#menu`);
 const siteFiltersElement = document.querySelector(`#filters`);
 const siteTripEventsHead = document.querySelector(`#tripEvents`);
 const siteTripEventsSection = document.querySelector(`.trip-events`);
+
+//////////////////////////////////////////////////////////////////
+const renderTripEvent = (tripEventListElement, event) => {
+  const eventComponent = new TripEventView(event);
+  const eventEditComponent = new EditEventView(event);
+
+  const replaceEditToEvent = () => {
+    tripEventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+  };
+
+  const replaceEventToEdit = () => {
+    tripEventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+  };
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+      replaceEditToEvent();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  eventComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    replaceEventToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+
+  eventEditComponent.getElement().querySelector(`.event__header`).addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    replaceEditToEvent();
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  });
+
+  renderElement(tripEventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+};
+//////////////////////////////////////////////////////
 
 renderTemplate(siteTripMainElement, new InfoHeadView().getElement(), RenderPosition.BEFOREEND);
 renderTemplate(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.AFTEREND);
@@ -41,9 +75,10 @@ renderElement(sortBoardComponent.getElement(), new SortView().getElement(), Rend
 
 const tripEventListComponent = new TripEventListView();
 renderElement(siteTripEventsSection, tripEventListComponent.getElement(), RenderPosition.AFTERBEGIN);
-renderElement(tripEventListComponent.getElement(), new EditEventView().getElement(), RenderPosition.AFTERBEGIN);
+//renderElement(tripEventListComponent.getElement(), new EditEventView(events[0]).getElement(), RenderPosition.AFTERBEGIN);
 
-events.forEach((event) => renderElement(tripEventListComponent.getElement(), new TripEventView().getElement(event), RenderPosition.BEFOREEND));
+events.forEach((event) => renderTripEvent(tripEventListComponent.getElement(), event));
+
 
 
 // import flatpickr from "flatpickr";

@@ -125,11 +125,12 @@ const createEditEventTemplate = (event) => {
 
 
 export default class EditEventView {
-  constructor() {
+  constructor(event) {
     this._element = null;
+    this._event = event;
   }
   getTemplate() {
-    return createEditEventTemplate();
+    return createEditEventTemplate(this._event);
   }
   getElement() {
     if (!this._element) {

@@ -38,7 +38,6 @@ const createOffersListTemplate = (offers) => {
   return `<ul class="event__selected-offers">${liString}</ul>`;
 };
 
-
 const createTripEventTemplate = ({
   dateBegin, typeIconSrc, typeText, destination, dateEnd, price, offers, favority
 }) => {
@@ -77,11 +76,12 @@ const createTripEventTemplate = ({
 };
 
 export default class TripEventView {
-  constructor() {
+  constructor(event) {
     this._element = null;
+    this._event = event;
   }
-  getTemplate(event) {
-    return createTripEventTemplate(event);
+  getTemplate() {
+    return createTripEventTemplate(this._event);
   }
   getElement() {
     if (!this._element) {
