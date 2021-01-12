@@ -31,11 +31,11 @@ const renderTripEvent = (tripEventListElement, event) => {
   const eventEditComponent = new EditEventView(event);
 
   const replaceEditToEvent = () => {
-    tripEventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+    tripEventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
   };
 
   const replaceEventToEdit = () => {
-    tripEventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+    tripEventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
   };
 
   const onEscKeyDown = (evt) => {
