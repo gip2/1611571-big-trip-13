@@ -11,7 +11,7 @@ import TripEventListView from "./view/trip-event-list.js";
 import EditEventView from "./view/edit-event.js";
 import TripEventView from "./view/trip-event.js";
 import {Event} from "./mock/travel.js";
-import {renderTemplate, renderElement, RenderPosition} from "./utils.js";
+import {renderElement, RenderPosition} from "./utils.js";
 
 let events = [];
 for (let index = 0; index < EVENT_NUM; index++) {
@@ -25,7 +25,6 @@ const siteFiltersElement = document.querySelector(`#filters`);
 const siteTripEventsHead = document.querySelector(`#tripEvents`);
 const siteTripEventsSection = document.querySelector(`.trip-events`);
 
-//////////////////////////////////////////////////////////////////
 const renderTripEvent = (tripEventListElement, event) => {
   const eventComponent = new TripEventView(event);
   const eventEditComponent = new EditEventView(event);
@@ -51,6 +50,11 @@ const renderTripEvent = (tripEventListElement, event) => {
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
+  eventEditComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    replaceEditToEvent();
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  });
+
   eventEditComponent.getElement().querySelector(`.event__header`).addEventListener(`submit`, (evt) => {
     evt.preventDefault();
     replaceEditToEvent();
@@ -59,10 +63,9 @@ const renderTripEvent = (tripEventListElement, event) => {
 
   renderElement(tripEventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
 };
-//////////////////////////////////////////////////////
 
-renderTemplate(siteTripMainElement, new InfoHeadView().getElement(), RenderPosition.BEFOREEND);
-renderTemplate(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.AFTEREND);
+renderElement(siteTripMainElement, new InfoHeadView(events).getElement(), RenderPosition.AFTERBEGIN);
+renderElement(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.BEFOREEND);
 
 const filterBoardComponent = new FilterBoardView();
 renderElement(siteFiltersElement, filterBoardComponent.getElement(), RenderPosition.BEFOREEND);
@@ -75,11 +78,8 @@ renderElement(sortBoardComponent.getElement(), new SortView().getElement(), Rend
 
 const tripEventListComponent = new TripEventListView();
 renderElement(siteTripEventsSection, tripEventListComponent.getElement(), RenderPosition.AFTERBEGIN);
-//renderElement(tripEventListComponent.getElement(), new EditEventView(events[0]).getElement(), RenderPosition.AFTERBEGIN);
 
 events.forEach((event) => renderTripEvent(tripEventListComponent.getElement(), event));
-
-
 
 // import flatpickr from "flatpickr";
 // // Otherwise, selectors are also supported

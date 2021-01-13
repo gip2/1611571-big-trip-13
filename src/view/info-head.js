@@ -46,7 +46,7 @@ const calculateInfoEvents = (events) => {
 const createInfoHeadTemplate = (events) => {
   const info = calculateInfoEvents(events);
   const {title, date, cost} = info;
-  return `<section class="trip-main__trip-info  trip-info">
+  return `</nav><section class="trip-main__trip-info  trip-info">
     <div class="trip-info__main">
       <h1 class="trip-info__title">${title}</h1>
 
@@ -60,11 +60,12 @@ const createInfoHeadTemplate = (events) => {
 };
 
 export default class InfoHeadView {
-  constructor() {
+  constructor(events) {
     this._element = null;
+    this._events = events;
   }
   getTemplate() {
-    return createInfoHeadTemplate();
+    return createInfoHeadTemplate(this._events);
   }
   getElement() {
     if (!this._element) {

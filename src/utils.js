@@ -2,7 +2,8 @@
 
 export const RenderPosition = {
   AFTERBEGIN: `afterbegin`,
-  BEFOREEND: `beforeend`
+  BEFOREEND: `beforeend`,
+  AFTEREND: `afterend`
 };
 
 export const renderElement = (container, element, place) => {
@@ -12,6 +13,9 @@ export const renderElement = (container, element, place) => {
       break;
     case RenderPosition.BEFOREEND:
       container.append(element);
+      break;
+    case RenderPosition.AFTEREND:
+      container.insertAdjacentHTML(place, element);
       break;
   }
 };
@@ -27,8 +31,8 @@ export const renderTemplate = (container, template, place = RenderPosition.BEFOR
 export const createElement = (template) => {
   const newElement = document.createElement(`div`); // 1
   newElement.innerHTML = template; // 2
-
-  return newElement.firstChild; // 3
+  const child = newElement.firstChild;
+  return child; // 3
 };
 // Единственный нюанс, что HTML в строке должен иметь общую обёртку,
 // то есть быть чем-то вроде <nav><a>Link 1</a><a>Link 2</a></nav>,
