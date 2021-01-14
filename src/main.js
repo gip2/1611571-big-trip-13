@@ -1,7 +1,8 @@
 const EVENT_NUM = 10;
 const KeyCode = {
-  
-}
+  ESCAPE: `Escape`,
+  ESC: `Esc`
+};
 
 import InfoHeadView from "./view/info-head.js";
 import ControlBoardView from "./view/controlBoard.js";
@@ -41,7 +42,7 @@ const renderTripEvent = (tripEventListElement, event) => {
   };
 
   const onEscKeyDown = (evt) => {
-    if (evt.key === `Escape` || evt.key === `Esc`) {
+    if (evt.key === KeyCode.ESCAPE || evt.key === KeyCode.ESC) {
       evt.preventDefault();
       replaceEditToEvent();
       document.removeEventListener(`keydown`, onEscKeyDown);
@@ -58,7 +59,7 @@ const renderTripEvent = (tripEventListElement, event) => {
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  eventEditComponent.getElement().querySelector(`.event__header`).addEventListener(`submit`, (evt) => {
+  eventEditComponent.getElement().addEventListener(`submit`, (evt) => {
     evt.preventDefault();
     replaceEditToEvent();
     document.removeEventListener(`keydown`, onEscKeyDown);
