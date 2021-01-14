@@ -1,4 +1,7 @@
 const EVENT_NUM = 10;
+const KeyCode = {
+  
+}
 
 import InfoHeadView from "./view/info-head.js";
 import ControlBoardView from "./view/controlBoard.js";
