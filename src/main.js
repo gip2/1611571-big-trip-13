@@ -9,7 +9,6 @@ import ControlBoardView from "./view/controlBoard.js";
 import FilterBoardView from "./view/filter-board.js";
 import FilterView from "./view/filters.js";
 import FilterButtonView from "./view/filter-button";
-import SortBoardView from "./view/sort-board.js";
 import SortView from "./view/sort.js";
 import TripEventListView from "./view/trip-event-list.js";
 import EditEventView from "./view/edit-event.js";
@@ -72,16 +71,14 @@ renderElement(siteTripMainElement, new InfoHeadView(events).getElement(), Render
 renderElement(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.BEFOREEND);
 
 const filterBoardComponent = new FilterBoardView();
-renderElement(siteFiltersElement, filterBoardComponent.getElement(), RenderPosition.BEFOREEND);
+renderElement(siteFiltersElement, filterBoardComponent.getElement(), RenderPosition.AFTEREND);
 renderElement(filterBoardComponent.getElement(), new FilterView().getElement(), RenderPosition.AFTERBEGIN);
 renderElement(filterBoardComponent.getElement(), new FilterButtonView().getElement(), RenderPosition.BEFOREEND);
 
-const sortBoardComponent = new SortBoardView();
-renderElement(siteTripEventsHead, sortBoardComponent.getElement(), RenderPosition.AFTERBEGIN);
-renderElement(sortBoardComponent.getElement(), new SortView().getElement(), RenderPosition.AFTERBEGIN);
+renderElement(siteTripEventsHead, new SortView().getElement(), RenderPosition.AFTEREND);
 
 const tripEventListComponent = new TripEventListView();
-renderElement(siteTripEventsSection, tripEventListComponent.getElement(), RenderPosition.AFTERBEGIN);
+renderElement(siteTripEventsSection, tripEventListComponent.getElement(), RenderPosition.BEFOREEND);
 
 events.forEach((event) => renderTripEvent(tripEventListComponent.getElement(), event));
 

@@ -15,7 +15,9 @@ export const renderElement = (container, element, place) => {
       container.append(element);
       break;
     case RenderPosition.AFTEREND:
-      container.insertAdjacentHTML(place, element);
+      container.after(element);
+      // console.log(`element.outerHTML: `, element.outerHTML)
+      // container.insertAdjacentHTML(place, element.outerHTML);// `ПРИВЕТ`);
       break;
   }
 };
