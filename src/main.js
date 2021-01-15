@@ -6,9 +6,7 @@ const KeyCode = {
 
 import InfoHeadView from "./view/info-head.js";
 import ControlBoardView from "./view/controlBoard.js";
-import FilterBoardView from "./view/filter-board.js";
 import FilterView from "./view/filters.js";
-import FilterButtonView from "./view/filter-button";
 import SortView from "./view/sort.js";
 import TripEventListView from "./view/trip-event-list.js";
 import EditEventView from "./view/edit-event.js";
@@ -70,10 +68,7 @@ const renderTripEvent = (tripEventListElement, event) => {
 renderElement(siteTripMainElement, new InfoHeadView(events).getElement(), RenderPosition.AFTERBEGIN);
 renderElement(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.BEFOREEND);
 
-const filterBoardComponent = new FilterBoardView();
-renderElement(siteFiltersElement, filterBoardComponent.getElement(), RenderPosition.AFTEREND);
-renderElement(filterBoardComponent.getElement(), new FilterView().getElement(), RenderPosition.AFTERBEGIN);
-renderElement(filterBoardComponent.getElement(), new FilterButtonView().getElement(), RenderPosition.BEFOREEND);
+renderElement(siteFiltersElement, new FilterView().getElement(), RenderPosition.AFTEREND);
 
 renderElement(siteTripEventsHead, new SortView().getElement(), RenderPosition.AFTEREND);
 
