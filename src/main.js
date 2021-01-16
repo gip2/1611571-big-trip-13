@@ -66,7 +66,7 @@ const renderTripEvent = (tripEventListElement, event) => {
 };
 
 renderElement(siteTripMainElement, new InfoHeadView(events).getElement(), RenderPosition.AFTERBEGIN);
-renderElement(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.BEFOREEND);
+renderElement(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.AFTEREND);
 
 renderElement(siteFiltersElement, new FilterView().getElement(), RenderPosition.AFTEREND);
 
