@@ -1,4 +1,5 @@
 // import flatpickr from "flatpickr";
+import {createElement} from "../utils.js";
 import {EVENT_TYPE_LIST} from "../mock/travel.js";
 import {EVENT_DESTINATION_LIST} from "../mock/travel.js";
 
@@ -61,7 +62,7 @@ const createPhotoContainerTemplate = (photos) => {
   </div>`;
 };
 
-export const createEditEventTemplate = (event) => {
+const createEditEventTemplate = (event) => {
   const {typeIconSrc, typeText, destination, destinationDescription, dateBegin, dateEnd, price, offers, photos} = event;
   return `<form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -108,6 +109,9 @@ export const createEditEventTemplate = (event) => {
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">Cancel</button>
+      <button class="event__rollup-btn" type="button">
+        <span class="visually-hidden">Open event</span>
+      </button>
     </header>
     <section class="event__details">
       ${(event.hasOwnProperty(`offers`) !== false) ? createEventOfferSelector(offers) : ``}
@@ -121,3 +125,23 @@ export const createEditEventTemplate = (event) => {
     </section>
   </form>`;
 };
+
+
+export default class EditEventView {
+  constructor(event) {
+    this._element = null;
+    this._event = event;
+  }
+  getTemplate() {
+    return createEditEventTemplate(this._event);
+  }
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+    return this._element;
+  }
+  removeElement() {
+    this._element = null;
+  }
+}

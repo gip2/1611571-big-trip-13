@@ -1,17 +1,18 @@
 const EVENT_NUM = 10;
-
-import {createMenuTemplate} from "./view/menu.js";
-import {createInfoHeadTemplate} from "./view/info-head.js";
-import {createFiltersTemplate} from "./view/filters.js";
-import {createSortTemplate} from "./view/sort.js";
-import {createTripEventTemplate} from "./view/trip-event.js";
-import {createTripEventListTemplate} from "./view/trip-event-list.js";
-import {createEditEventTemplate} from "./view/edit-event.js";
-import {Event} from "./mock/travel.js";
-
-const render = (container, template, place = `beforeend`) => {
-  container.insertAdjacentHTML(place, template);
+const KeyCode = {
+  ESCAPE: `Escape`,
+  ESC: `Esc`
 };
+
+import InfoHeadView from "./view/info-head.js";
+import ControlBoardView from "./view/controlBoard.js";
+import FilterView from "./view/filters.js";
+import SortView from "./view/sort.js";
+import TripEventListView from "./view/trip-event-list.js";
+import EditEventView from "./view/edit-event.js";
+import TripEventView from "./view/trip-event.js";
+import {Event} from "./mock/travel.js";
+import {renderElement, RenderPosition} from "./utils.js";
 
 let events = [];
 for (let index = 0; index < EVENT_NUM; index++) {
@@ -24,18 +25,57 @@ const siteMenuElement = document.querySelector(`#menu`);
 const siteFiltersElement = document.querySelector(`#filters`);
 const siteTripEventsHead = document.querySelector(`#tripEvents`);
 const siteTripEventsSection = document.querySelector(`.trip-events`);
-render(siteTripMainElement, createInfoHeadTemplate(events), `afterbegin`);
-render(siteMenuElement, createMenuTemplate(), `afterend`);
-render(siteFiltersElement, createFiltersTemplate(), `afterend`);
-render(siteTripEventsHead, createSortTemplate(), `afterend`);
-render(siteTripEventsSection, createTripEventListTemplate());
-const siteTripEventsList = document.querySelector(`.trip-events__list`);
-render(siteTripEventsList, createEditEventTemplate(events[0]));
 
-events.forEach((element) => {
-  render(siteTripEventsList, createTripEventTemplate(element));
-});
+const renderTripEvent = (tripEventListElement, event) => {
+  const eventComponent = new TripEventView(event);
+  const eventEditComponent = new EditEventView(event);
 
+  const replaceEditToEvent = () => {
+    tripEventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+  };
+
+  const replaceEventToEdit = () => {
+    tripEventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+  };
+
+  const onEscKeyDown = (evt) => {
+    if (evt.key === KeyCode.ESCAPE || evt.key === KeyCode.ESC) {
+      evt.preventDefault();
+      replaceEditToEvent();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
+  eventComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    replaceEventToEdit();
+    document.addEventListener(`keydown`, onEscKeyDown);
+  });
+
+  eventEditComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    replaceEditToEvent();
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  });
+
+  eventEditComponent.getElement().addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    replaceEditToEvent();
+    document.removeEventListener(`keydown`, onEscKeyDown);
+  });
+
+  renderElement(tripEventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
+renderElement(siteTripMainElement, new InfoHeadView(events).getElement(), RenderPosition.AFTERBEGIN);
+renderElement(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.BEFOREEND);
+
+renderElement(siteFiltersElement, new FilterView().getElement(), RenderPosition.AFTEREND);
+
+renderElement(siteTripEventsHead, new SortView().getElement(), RenderPosition.AFTEREND);
+
+const tripEventListComponent = new TripEventListView();
+renderElement(siteTripEventsSection, tripEventListComponent.getElement(), RenderPosition.BEFOREEND);
+
+events.forEach((event) => renderTripEvent(tripEventListComponent.getElement(), event));
 
 // import flatpickr from "flatpickr";
 // // Otherwise, selectors are also supported
