@@ -1,5 +1,8 @@
 import {createElement} from "../utils.js";
 import {getMonthAndDay} from "./trip-event.js";
+
+import AbstractView from "./abstract.js";
+
 const MAX_EVENTS_ITEMS = 3;
 
 const calculateInfoEvents = (events) => {
@@ -59,21 +62,12 @@ const createInfoHeadTemplate = (events) => {
   </section>`;
 };
 
-export default class InfoHeadView {
+export default class InfoHeadView extends AbstractView {
   constructor(events) {
-    this._element = null;
+    super();
     this._events = events;
   }
   getTemplate() {
     return createInfoHeadTemplate(this._events);
-  }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
-  }
-  removeElement() {
-    this._element = null;
   }
 }
