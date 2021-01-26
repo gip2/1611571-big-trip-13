@@ -1,4 +1,5 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
+
 export const getMonthAndDay = (date) => date.toDateString().slice(4, 10).toUpperCase();
 const getTime = (date) => date.toTimeString().slice(0, 5);
 
@@ -42,8 +43,6 @@ const createTripEventTemplate = ({
   dateBegin, typeIconSrc, typeText, destination, dateEnd, price, offers, favority
 }) => {
   const favorityClass = favority ? `event__favorite-btn--active` : `event__favorite-btn`;
-
-
   return `<div class="event">
     <time class="event__date" datetime=${dateBegin}>${getMonthAndDay(dateBegin)}</time>
     <div class="event__type">
@@ -75,21 +74,21 @@ const createTripEventTemplate = ({
   </div>`;
 };
 
-export default class TripEventView {
-  constructor(event) {
-    this._element = null;
-    this._event = event;
+export default class InfoHeadView extends AbstractView {
+  constructor(events) {
+    super();
+    this._event = events;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
   getTemplate() {
     return createTripEventTemplate(this._event);
   }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  _editClickHandler() {
+    // evt.preventDefault();
+    this._callback.editClick();
   }
-  removeElement() {
-    this._element = null;
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._editClickHandler);
   }
 }

@@ -12,7 +12,7 @@ import TripEventListView from "./view/trip-event-list.js";
 import EditEventView from "./view/edit-event.js";
 import TripEventView from "./view/trip-event.js";
 import {Event} from "./mock/travel.js";
-import {renderElement, RenderPosition} from "./utils.js";
+import {render, replace, RenderPosition} from "./utils/render.js";
 
 let events = [];
 for (let index = 0; index < EVENT_NUM; index++) {
@@ -31,11 +31,11 @@ const renderTripEvent = (tripEventListElement, event) => {
   const eventEditComponent = new EditEventView(event);
 
   const replaceEditToEvent = () => {
-    tripEventListElement.replaceChild(eventComponent.getElement(), eventEditComponent.getElement());
+    replace(eventComponent, eventEditComponent);
   };
 
   const replaceEventToEdit = () => {
-    tripEventListElement.replaceChild(eventEditComponent.getElement(), eventComponent.getElement());
+    replace(eventEditComponent, eventComponent);
   };
 
   const onEscKeyDown = (evt) => {
@@ -46,34 +46,49 @@ const renderTripEvent = (tripEventListElement, event) => {
     }
   };
 
-  eventComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+  eventComponent.setEditClickHandler(() => {
     replaceEventToEdit();
     document.addEventListener(`keydown`, onEscKeyDown);
   });
 
-  eventEditComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+  // eventComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+  //   replaceEventToEdit();
+  //   document.addEventListener(`keydown`, onEscKeyDown);
+  // });
+
+  eventEditComponent.setRollupClickHandler(() => {
     replaceEditToEvent();
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  eventEditComponent.getElement().addEventListener(`submit`, (evt) => {
-    evt.preventDefault();
+  // eventEditComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+  //   replaceEditToEvent();
+  //   document.removeEventListener(`keydown`, onEscKeyDown);
+  // });
+
+  eventEditComponent.setSubmitHandler(() => {
     replaceEditToEvent();
     document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
-  renderElement(tripEventListElement, eventComponent.getElement(), RenderPosition.BEFOREEND);
+  // eventEditComponent.getElement().addEventListener(`submit`, (evt) => {
+  //   evt.preventDefault();
+  //   replaceEditToEvent();
+  //   document.removeEventListener(`keydown`, onEscKeyDown);
+  // });
+
+  render(tripEventListElement, eventComponent, RenderPosition.BEFOREEND);
 };
 
-renderElement(siteTripMainElement, new InfoHeadView(events).getElement(), RenderPosition.AFTERBEGIN);
-renderElement(siteMenuElement, new ControlBoardView().getElement(), RenderPosition.AFTEREND);
+render(siteTripMainElement, new InfoHeadView(events), RenderPosition.AFTERBEGIN);
+render(siteMenuElement, new ControlBoardView(), RenderPosition.AFTEREND);
 
-renderElement(siteFiltersElement, new FilterView().getElement(), RenderPosition.AFTEREND);
+render(siteFiltersElement, new FilterView(), RenderPosition.AFTEREND);
 
-renderElement(siteTripEventsHead, new SortView().getElement(), RenderPosition.AFTEREND);
+render(siteTripEventsHead, new SortView(), RenderPosition.AFTEREND);
 
 const tripEventListComponent = new TripEventListView();
-renderElement(siteTripEventsSection, tripEventListComponent.getElement(), RenderPosition.BEFOREEND);
+render(siteTripEventsSection, tripEventListComponent, RenderPosition.BEFOREEND);
 
 events.forEach((event) => renderTripEvent(tripEventListComponent.getElement(), event));
 
