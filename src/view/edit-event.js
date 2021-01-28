@@ -108,12 +108,12 @@ const createEditEventTemplate = ({type, typeIconSrc, typeText, destination, dest
       </button>
     </header>
     <section class="event__details">
-      ${(offers !== null && offers !== undefined) ? createEventOfferSelector(offers) : ``}
+      ${offers ? createEventOfferSelector(offers) : ``}
       <section class="event__section  event__section--destination">
         ${(destinationDescription.length > 0) ? `<h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${destinationDescription}</p>` : ``}
 
-        ${(photos !== null && photos !== undefined) ? createPhotoContainerTemplate(photos) : ``}
+        ${photos ? createPhotoContainerTemplate(photos) : ``}
         
       </section>
     </section>
