@@ -1,19 +1,18 @@
 // import flatpickr from "flatpickr";
-import {createElement} from "../utils.js";
 import {EVENT_TYPE_LIST} from "../mock/travel.js";
 import {EVENT_DESTINATION_LIST} from "../mock/travel.js";
+import AbstractView from "./abstract.js";
 
-const createEventTypeGroup = (eventTypes, event) => {
+const createEventTypeGroup = (eventTypes, eventType) => {
   return eventTypes.reduce((accumulator, element) => {
     const {type, text} = element;
     return accumulator + `<div class="event__type-item">
-              <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${(type === event.type) ? `checked` : ``}>
+              <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${(type === eventType) ? `checked` : ``}>
               <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${text}</label>
             </div>
     `;
   }, ``);
 };
-
 const createDestinationGroup = (eventDestinations) => {
   return eventDestinations.reduce((accumulator, element) => {
     return accumulator + `<option value="${element}"></option>`;
@@ -21,11 +20,7 @@ const createDestinationGroup = (eventDestinations) => {
 };
 
 const createDateTimeString = (date) => {
-  let s = ``;
-  if (date !== undefined) {
-    s = `${date.getDate()}/${(date.getMonth() + 1)}/${String(date.getFullYear()).slice(2, 4)} ${String(date.toTimeString()).slice(0, 5)}`;
-  }
-  return s;
+  return (date !== undefined) ? `${date.getDate()}/${(date.getMonth() + 1)}/${String(date.getFullYear()).slice(2, 4)} ${String(date.toTimeString()).slice(0, 5)}` : ``;
 };// 19/03/19 00:00
 
 const createEventOfferSelector = (offers) => {
@@ -62,8 +57,7 @@ const createPhotoContainerTemplate = (photos) => {
   </div>`;
 };
 
-const createEditEventTemplate = (event) => {
-  const {typeIconSrc, typeText, destination, destinationDescription, dateBegin, dateEnd, price, offers, photos} = event;
+const createEditEventTemplate = ({type, typeIconSrc, typeText, destination, destinationDescription, dateBegin, dateEnd, price, offers, photos}) => {
   return `<form class="event event--edit" action="#" method="post">
     <header class="event__header">
       <div class="event__type-wrapper">
@@ -76,7 +70,7 @@ const createEditEventTemplate = (event) => {
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
-            ${createEventTypeGroup(EVENT_TYPE_LIST, event)}
+            ${createEventTypeGroup(EVENT_TYPE_LIST, type)}
           </fieldset>
         </div>
       </div>
@@ -87,7 +81,7 @@ const createEditEventTemplate = (event) => {
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination}" list="destination-list-1">
         <datalist id="destination-list-1">
-          ${createDestinationGroup(EVENT_DESTINATION_LIST, event)}
+          ${createDestinationGroup(EVENT_DESTINATION_LIST)}
         </datalist>
       </div>
 
@@ -114,34 +108,48 @@ const createEditEventTemplate = (event) => {
       </button>
     </header>
     <section class="event__details">
-      ${(event.hasOwnProperty(`offers`) !== false) ? createEventOfferSelector(offers) : ``}
+      ${offers ? createEventOfferSelector(offers) : ``}
       <section class="event__section  event__section--destination">
         ${(destinationDescription.length > 0) ? `<h3 class="event__section-title  event__section-title--destination">Destination</h3>
         <p class="event__destination-description">${destinationDescription}</p>` : ``}
 
-        ${(event.hasOwnProperty(`photos`) !== false) ? createPhotoContainerTemplate(photos) : ``}
+        ${photos ? createPhotoContainerTemplate(photos) : ``}
         
       </section>
     </section>
   </form>`;
 };
 
-
-export default class EditEventView {
+export default class InfoHeadView extends AbstractView {
   constructor(event) {
-    this._element = null;
+    super();
     this._event = event;
+    this._rollupClickHandler = this._rollupClickHandler.bind(this);
+    this._submitHandler = this._submitHandler.bind(this);
   }
   getTemplate() {
     return createEditEventTemplate(this._event);
   }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  _rollupClickHandler() {
+    // evt.preventDefault();
+    this._callback.rollupClick();
   }
-  removeElement() {
-    this._element = null;
+  setRollupClickHandler(callback) {
+    this._callback.rollupClick = callback;
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._rollupClickHandler);
   }
+  _submitHandler(evt) {
+    evt.preventDefault();
+    this._callback.submit();
+  }
+  setSubmitHandler(callback) {
+    this._callback.submit = callback;
+    this.getElement().addEventListener(`submit`, this._submitHandler);
+  }
+
+  // eventEditComponent.getElement().addEventListener(`submit`, (evt) => {
+  //   evt.preventDefault();
+  //   replaceEditToEvent();
+  //   document.removeEventListener(`keydown`, onEscKeyDown);
+  // });
 }

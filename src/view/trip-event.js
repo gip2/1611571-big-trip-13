@@ -1,19 +1,20 @@
-import {createElement} from "../utils.js";
+import AbstractView from "./abstract.js";
+
 export const getMonthAndDay = (date) => date.toDateString().slice(4, 10).toUpperCase();
 const getTime = (date) => date.toTimeString().slice(0, 5);
 
-const msecInSecond = 1000;
-const secInMin = 60;
-const msecInMinute = secInMin * msecInSecond;
-const minutesInHour = 60;
-const hoursInDay = 24;
-const minutesInDay = hoursInDay * minutesInHour;
+const MSEC_IN_SECOND = 1000;
+const SEC_IN_MIN = 60;
+const MSEC_IN_MIN = SEC_IN_MIN * MSEC_IN_SECOND;
+const MIN_IN_HOUR = 60;
+const HOURS_IN_DAY = 24;
+const MIN_IN_DAY = HOURS_IN_DAY * MIN_IN_HOUR;
 
 const durationTemplate = (date1, date2) => {
-  let durationMinutes = Math.floor((date2 - date1) / msecInMinute);
-  let days = Math.floor(durationMinutes / minutesInDay);
-  let hours = Math.floor((durationMinutes - days * minutesInDay) / minutesInHour);
-  let minutes = durationMinutes - days * minutesInDay - hours * minutesInHour;
+  const durationMinutes = Math.floor((date2 - date1) / MSEC_IN_MIN);
+  const days = Math.floor(durationMinutes / MIN_IN_DAY);
+  const hours = Math.floor((durationMinutes - days * MIN_IN_DAY) / MIN_IN_HOUR);
+  const minutes = durationMinutes - days * MIN_IN_DAY - hours * MIN_IN_HOUR;
   if (days > 0) {
     return String(days) + `D ` + hours + `H ` + minutes + `M`;
   }
@@ -42,8 +43,6 @@ const createTripEventTemplate = ({
   dateBegin, typeIconSrc, typeText, destination, dateEnd, price, offers, favority
 }) => {
   const favorityClass = favority ? `event__favorite-btn--active` : `event__favorite-btn`;
-
-
   return `<div class="event">
     <time class="event__date" datetime=${dateBegin}>${getMonthAndDay(dateBegin)}</time>
     <div class="event__type">
@@ -75,21 +74,21 @@ const createTripEventTemplate = ({
   </div>`;
 };
 
-export default class TripEventView {
-  constructor(event) {
-    this._element = null;
-    this._event = event;
+export default class InfoHeadView extends AbstractView {
+  constructor(events) {
+    super();
+    this._event = events;
+    this._editClickHandler = this._editClickHandler.bind(this);
   }
   getTemplate() {
     return createTripEventTemplate(this._event);
   }
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-    return this._element;
+  _editClickHandler() {
+    // evt.preventDefault();
+    this._callback.editClick();
   }
-  removeElement() {
-    this._element = null;
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._editClickHandler);
   }
 }
