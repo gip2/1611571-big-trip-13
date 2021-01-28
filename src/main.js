@@ -1,9 +1,3 @@
-const EVENT_NUM = 10;
-const KeyCode = {
-  ESCAPE: `Escape`,
-  ESC: `Esc`
-};
-
 import InfoHeadView from "./view/info-head.js";
 import ControlBoardView from "./view/controlBoard.js";
 import FilterView from "./view/filters.js";
@@ -14,7 +8,13 @@ import TripEventView from "./view/trip-event.js";
 import {Event} from "./mock/travel.js";
 import {render, replace, RenderPosition} from "./utils/render.js";
 
-let events = [];
+const EVENT_NUM = 10;
+const KeyCode = {
+  ESCAPE: `Escape`,
+  ESC: `Esc`
+};
+
+const events = [];
 for (let index = 0; index < EVENT_NUM; index++) {
   events.push(new Event());
 }

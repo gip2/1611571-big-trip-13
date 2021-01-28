@@ -1,6 +1,4 @@
-import {createElement} from "../utils/render.js";
 import {getMonthAndDay} from "./trip-event.js";
-
 import AbstractView from "./abstract.js";
 
 const MAX_EVENTS_ITEMS = 3;
